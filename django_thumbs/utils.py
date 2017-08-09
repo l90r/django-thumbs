@@ -55,10 +55,19 @@ def generate_thumb(img, thumb_size, format):
             thumb_h = int(ysize*wpercent)
         
         # If fixed height and proportional width
-        if thumb_w == 0:
+        elif thumb_w == 0:
             hpercent = float(thumb_h)/float(ysize)
             thumb_w = int(xsize*hpercent)
-        
+
+        # If fixed largest dimension
+        elif thumb_w == -1:
+            if xsize > ysize:
+                wpercent = float(thumb_h) / float(xsize)
+                thumb_w = thumb_h
+                thumb_h = int(ysize * wpercent)
+            else:
+                hpercent = float(thumb_h) / float(ysize)
+                thumb_w = int(xsize * hpercent)
         else:
             x1 = y1 = 0
             x2, y2 = image.size
