@@ -6,7 +6,7 @@
 """
 from PIL import Image
 from django.core.files.base import ContentFile
-import cStringIO
+from io import BytesIO
 
 def generate_thumb(img, thumb_size, format):
     """
@@ -22,6 +22,7 @@ def generate_thumb(img, thumb_size, format):
                 (this format will be used for the generated thumbnail, too)
     """
     
+    img.open()
     img.seek(0) # see http://code.djangoproject.com/ticket/8222 for details
     image = Image.open(img)
     
@@ -94,7 +95,7 @@ def generate_thumb(img, thumb_size, format):
             image.load()
                 
         
-    io = cStringIO.StringIO()
+    io = BytesIO()
     # PNG and GIF are the same, JPG is JPEG
     if format.upper()=='JPG':
         format = 'JPEG'
